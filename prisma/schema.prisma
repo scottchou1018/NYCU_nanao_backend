@@ -12,3 +12,90 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model User{
+  id            Int           @id @default(autoincrement())
+  username      String        @unique
+  password      String
+  reg_time      DateTime
+  role          Role
+  userDetail    UserDetail?
+  hurtForms     HurtForm[]
+  weekForms     WeekForm[]
+  yearForms     YearForm[]
+  
+}
+model UserDetail{
+  user              User          @relation(fields: [user_id], references: [id])
+  user_id           Int           @id
+  gender            Gender?
+  birthday          DateTime?
+  age               Int?
+  medical_History   String?
+  headshot          Bytes?        @db.Blob
+  address           String?
+  emall             String?
+  phone             String?
+  update_time       DateTime?
+}
+
+model HurtForm{
+  id              Int       @id @default(autoincrement())
+  user            User      @relation(fields: [user_id], references: [id])
+  user_id         Int
+  fill_time       DateTime
+  head_hurt       Int?
+  shoulder_hurt   Int?
+  arm_hurt        Int?
+  hand_hurt       Int?
+  chest_hurt      Int?
+  stomach_hurt    Int?
+  back_hurt       Int?
+  hipnthigh_hurt  Int?
+  knee_hurt       Int?
+  feet_hurt       Int?
+}
+
+model YearForm{
+  id          Int       @id
+  user        User      @relation(fields: [user_id], references: [id])
+  user_id     Int
+  fill_time   DateTime
+  head        Boolean?
+  shoulder    Boolean?
+  arm         Boolean?
+  hand        Boolean?
+  chest       Boolean?
+  stomach     Boolean?
+  back        Boolean?
+  hipnthigh   Boolean?
+  knee        Boolean?
+  feet        Boolean?
+}
+
+model WeekForm{
+  id          Int     @id
+  user        User    @relation(fields: [user_id], references: [id])
+  user_id     Int
+  fill_time   DateTime
+  head        Boolean?
+  shoulder    Boolean?
+  arm         Boolean?
+  hand        Boolean?
+  chest       Boolean?
+  stomach     Boolean?
+  back        Boolean?
+  hipnthigh   Boolean?
+  knee        Boolean?
+  feet        Boolean?
+}
+
+enum Gender{
+  MALE
+  FEMALE
+}
+
+enum Role{
+  USER
+  ADMIN
+}
