@@ -44,50 +44,95 @@ model HurtForm{
   user            User      @relation(fields: [user_id], references: [id])
   user_id         Int
   fill_time       DateTime
-  head_hurt       Int?
-  shoulder_hurt   Int?
-  arm_hurt        Int?
-  hand_hurt       Int?
-  chest_hurt      Int?
-  stomach_hurt    Int?
-  back_hurt       Int?
-  hipnthigh_hurt  Int?
-  knee_hurt       Int?
-  feet_hurt       Int?
+  head            Int
+  left_shoulder   Int
+  right_shoulder  Int
+  left_arm        Int
+  right_arm       Int
+  left_wrist      Int
+  right_wrist     Int
+  left_hand       Int
+  right_hand      Int
+  left_chest      Int
+  right_chest     Int
+  left_belley     Int
+  right_belley    Int
+  upper_back      Int
+  lower_back      Int
+  left_thigh      Int
+  right_thigh     Int
+  left_hip        Int
+  right_hip       Int
+  left_knee       Int
+  right_knee      Int
+  left_ankle      Int
+  right_ankle     Int
+  left_foot       Int
+  right_foot      Int
 }
 
 model YearForm{
-  id          Int       @id
-  user        User      @relation(fields: [user_id], references: [id])
-  user_id     Int
-  fill_time   DateTime
-  head        Boolean?
-  shoulder    Boolean?
-  arm         Boolean?
-  hand        Boolean?
-  chest       Boolean?
-  stomach     Boolean?
-  back        Boolean?
-  hipnthigh   Boolean?
-  knee        Boolean?
-  feet        Boolean?
+  id              Int       @id
+  user            User      @relation(fields: [user_id], references: [id])
+  user_id         Int
+  fill_time       DateTime
+  head            Boolean
+  left_shoulder   Boolean
+  right_shoulder  Boolean
+  left_arm        Boolean
+  right_arm       Boolean
+  left_wrist      Boolean
+  right_wrist     Boolean
+  left_hand       Boolean
+  right_hand      Boolean
+  left_chest      Boolean
+  right_chest     Boolean
+  left_belley     Boolean
+  right_belley    Boolean
+  upper_back      Boolean
+  lower_back      Boolean
+  left_thigh      Boolean
+  right_thigh     Boolean
+  left_hip        Boolean
+  right_hip       Boolean
+  left_knee       Boolean
+  right_knee      Boolean
+  left_ankle      Boolean
+  right_ankle     Boolean
+  left_foot       Boolean
+  right_foot      Boolean
 }
 
 model WeekForm{
-  id          Int     @id
-  user        User    @relation(fields: [user_id], references: [id])
-  user_id     Int
-  fill_time   DateTime
-  head        Boolean?
-  shoulder    Boolean?
-  arm         Boolean?
-  hand        Boolean?
-  chest       Boolean?
-  stomach     Boolean?
-  back        Boolean?
-  hipnthigh   Boolean?
-  knee        Boolean?
-  feet        Boolean?
+  id              Int     @id
+  user            User    @relation(fields: [user_id], references: [id])
+  user_id         Int
+  fill_time       DateTime
+  head            Boolean
+  left_shoulder   Boolean
+  right_shoulder  Boolean
+  left_arm        Boolean
+  right_arm       Boolean
+  left_wrist      Boolean
+  right_wrist     Boolean
+  left_hand       Boolean
+  right_hand      Boolean
+  left_chest      Boolean
+  right_chest     Boolean
+  left_belley     Boolean
+  right_belley    Boolean
+  upper_back      Boolean
+  lower_back      Boolean
+  left_thigh      Boolean
+  right_thigh     Boolean
+  left_hip        Boolean
+  right_hip       Boolean
+  left_knee       Boolean
+  right_knee      Boolean
+  left_ankle      Boolean
+  right_ankle     Boolean
+  left_foot       Boolean
+  right_foot      Boolean
 }
 
 enum Gender{
