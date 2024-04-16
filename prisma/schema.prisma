@@ -20,6 +20,7 @@ model User{
   reg_time      DateTime
   role          Role
   userDetail    UserDetail?
+  session       Session?
   hurtForms     HurtForm[]
   weekForms     WeekForm[]
   yearForms     YearForm[]
@@ -39,6 +40,12 @@ model UserDetail{
   update_time       DateTime?
 }
 
+model Session{
+  user            User      @relation(fields: [user_id], references: [id])
+  user_id         Int       @id
+  token           String
+  expired_time    DateTime
+}
 model HurtForm{
   id              Int       @id @default(autoincrement())
   user            User      @relation(fields: [user_id], references: [id])
