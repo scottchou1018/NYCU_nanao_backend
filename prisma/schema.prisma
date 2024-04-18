@@ -17,7 +17,7 @@ model User{
   id            Int           @id @default(autoincrement())
   username      String        @unique
   password      String
-  reg_time      DateTime
+  reg_time      DateTime      @default(now())
   role          Role
   userDetail    UserDetail?
   session       Session?
@@ -30,14 +30,14 @@ model UserDetail{
   user              User          @relation(fields: [user_id], references: [id])
   user_id           Int           @id
   gender            Gender?
-  birthday          DateTime?
+  birthday          DateTime?     @db.Date
   age               Int?
   medical_History   String?
   headshot          Bytes?        @db.Blob
   address           String?
   emall             String?
   phone             String?
-  update_time       DateTime?
+  updateAt          DateTime      @updatedAt
 }
 
 model Session{
@@ -50,96 +50,96 @@ model HurtForm{
   id              Int       @id @default(autoincrement())
   user            User      @relation(fields: [user_id], references: [id])
   user_id         Int
-  fill_time       DateTime
-  head            Int
-  left_shoulder   Int
-  right_shoulder  Int
-  left_arm        Int
-  right_arm       Int
-  left_wrist      Int
-  right_wrist     Int
-  left_hand       Int
-  right_hand      Int
-  left_chest      Int
-  right_chest     Int
-  left_belley     Int
-  right_belley    Int
-  upper_back      Int
-  lower_back      Int
-  left_thigh      Int
-  right_thigh     Int
-  left_hip        Int
-  right_hip       Int
-  left_knee       Int
-  right_knee      Int
-  left_ankle      Int
-  right_ankle     Int
-  left_foot       Int
-  right_foot      Int
+  fill_time       DateTime  @default(now())
+  head            Int       @default(0)
+  left_shoulder   Int       @default(0)
+  right_shoulder  Int       @default(0)
+  left_arm        Int       @default(0)
+  right_arm       Int       @default(0)
+  left_wrist      Int       @default(0)
+  right_wrist     Int       @default(0)
+  left_hand       Int       @default(0)
+  right_hand      Int       @default(0)
+  left_chest      Int       @default(0)
+  right_chest     Int       @default(0)
+  left_belley     Int       @default(0)
+  right_belley    Int       @default(0)
+  upper_back      Int       @default(0)
+  lower_back      Int       @default(0)
+  left_thigh      Int       @default(0)
+  right_thigh     Int       @default(0)
+  left_hip        Int       @default(0)
+  right_hip       Int       @default(0)
+  left_knee       Int       @default(0)
+  right_knee      Int       @default(0)
+  left_ankle      Int       @default(0)
+  right_ankle     Int       @default(0)
+  left_foot       Int       @default(0)
+  right_foot      Int       @default(0)
 }
 
 model YearForm{
   id              Int       @id
   user            User      @relation(fields: [user_id], references: [id])
   user_id         Int
-  fill_time       DateTime
-  head            Boolean
-  left_shoulder   Boolean
-  right_shoulder  Boolean
-  left_arm        Boolean
-  right_arm       Boolean
-  left_wrist      Boolean
-  right_wrist     Boolean
-  left_hand       Boolean
-  right_hand      Boolean
-  left_chest      Boolean
-  right_chest     Boolean
-  left_belley     Boolean
-  right_belley    Boolean
-  upper_back      Boolean
-  lower_back      Boolean
-  left_thigh      Boolean
-  right_thigh     Boolean
-  left_hip        Boolean
-  right_hip       Boolean
-  left_knee       Boolean
-  right_knee      Boolean
-  left_ankle      Boolean
-  right_ankle     Boolean
-  left_foot       Boolean
-  right_foot      Boolean
+  fill_time       DateTime  @default(now())
+  head            Boolean   @default(false)
+  left_shoulder   Boolean   @default(false)
+  right_shoulder  Boolean   @default(false)
+  left_arm        Boolean   @default(false)
+  right_arm       Boolean   @default(false)
+  left_wrist      Boolean   @default(false)
+  right_wrist     Boolean   @default(false)
+  left_hand       Boolean   @default(false)
+  right_hand      Boolean   @default(false)
+  left_chest      Boolean   @default(false)
+  right_chest     Boolean   @default(false)
+  left_belley     Boolean   @default(false)
+  right_belley    Boolean   @default(false)
+  upper_back      Boolean   @default(false)
+  lower_back      Boolean   @default(false)
+  left_thigh      Boolean   @default(false)
+  right_thigh     Boolean   @default(false)
+  left_hip        Boolean   @default(false)
+  right_hip       Boolean   @default(false)
+  left_knee       Boolean   @default(false)
+  right_knee      Boolean   @default(false)
+  left_ankle      Boolean   @default(false)
+  right_ankle     Boolean   @default(false)
+  left_foot       Boolean   @default(false)
+  right_foot      Boolean   @default(false)
 }
 
 model WeekForm{
-  id              Int     @id
-  user            User    @relation(fields: [user_id], references: [id])
+  id              Int       @id
+  user            User      @relation(fields: [user_id], references: [id])
   user_id         Int
-  fill_time       DateTime
-  head            Boolean
-  left_shoulder   Boolean
-  right_shoulder  Boolean
-  left_arm        Boolean
-  right_arm       Boolean
-  left_wrist      Boolean
-  right_wrist     Boolean
-  left_hand       Boolean
-  right_hand      Boolean
-  left_chest      Boolean
-  right_chest     Boolean
-  left_belley     Boolean
-  right_belley    Boolean
-  upper_back      Boolean
-  lower_back      Boolean
-  left_thigh      Boolean
-  right_thigh     Boolean
-  left_hip        Boolean
-  right_hip       Boolean
-  left_knee       Boolean
-  right_knee      Boolean
-  left_ankle      Boolean
-  right_ankle     Boolean
-  left_foot       Boolean
-  right_foot      Boolean
+  fill_time       DateTime  @default(now())
+  head            Boolean   @default(false)
+  left_shoulder   Boolean   @default(false)
+  right_shoulder  Boolean   @default(false)
+  left_arm        Boolean   @default(false)
+  right_arm       Boolean   @default(false)
+  left_wrist      Boolean   @default(false)
+  right_wrist     Boolean   @default(false)
+  left_hand       Boolean   @default(false)
+  right_hand      Boolean   @default(false)
+  left_chest      Boolean   @default(false)
+  right_chest     Boolean   @default(false)
+  left_belley     Boolean   @default(false)
+  right_belley    Boolean   @default(false)
+  upper_back      Boolean   @default(false)
+  lower_back      Boolean   @default(false)
+  left_thigh      Boolean   @default(false)
+  right_thigh     Boolean   @default(false)
+  left_hip        Boolean   @default(false)
+  right_hip       Boolean   @default(false)
+  left_knee       Boolean   @default(false)
+  right_knee      Boolean   @default(false)
+  left_ankle      Boolean   @default(false)
+  right_ankle     Boolean   @default(false)
+  left_foot       Boolean   @default(false)
+  right_foot      Boolean   @default(false)
 }
 
 enum Gender{
