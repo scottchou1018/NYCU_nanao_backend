@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class HurtformService {
-  create(createHurtformDto: Prisma.HurtFormCreateInput) {
-    return 'This action adds a new hurtform';
+  constructor(private readonly databaseService: DatabaseService){}
+  create(id: number, createHurtformDto: Prisma.HurtFormCreateInput) {
+    return this.databaseService.hurtForm.create({
+      data: {...createHurtformDto, user: {connect: {id: id}}}
+    });
   }
 
   findAll() {

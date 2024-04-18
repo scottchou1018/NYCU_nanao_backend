@@ -6,9 +6,9 @@ import { Prisma } from '@prisma/client';
 export class HurtformController {
   constructor(private readonly hurtformService: HurtformService) {}
 
-  @Post()
-  create(@Body() createHurtformDto: Prisma.HurtFormCreateInput) {
-    return this.hurtformService.create(createHurtformDto);
+  @Post(':id')
+  create(@Param('id') id: string, @Body() createHurtformDto: Prisma.HurtFormCreateInput) {
+    return this.hurtformService.create(+id, createHurtformDto);
   }
 
   @Get()
