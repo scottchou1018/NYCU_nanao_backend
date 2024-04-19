@@ -27,28 +27,28 @@ model User{
   
 }
 model UserDetail{
-  user              User          @relation(fields: [user_id], references: [id])
+  user              User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id           Int           @id
   gender            Gender?
-  birthday          DateTime?     @db.Date
+  birthday          String
   age               Int?
   medical_History   String?
   headshot          Bytes?        @db.Blob
   address           String?
-  emall             String?
+  email             String?
   phone             String?
   updateAt          DateTime      @updatedAt
 }
 
 model Session{
-  user            User      @relation(fields: [user_id], references: [id])
+  user            User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id         Int       @id
   token           String
   expired_time    DateTime
 }
 model HurtForm{
   id              Int       @id @default(autoincrement())
-  user            User      @relation(fields: [user_id], references: [id])
+  user            User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id         Int
   fill_time       DateTime  @default(now())
   head            Int       @default(0)
@@ -80,7 +80,7 @@ model HurtForm{
 
 model YearForm{
   id              Int       @id
-  user            User      @relation(fields: [user_id], references: [id])
+  user            User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id         Int
   fill_time       DateTime  @default(now())
   head            Boolean   @default(false)
@@ -112,7 +112,7 @@ model YearForm{
 
 model WeekForm{
   id              Int       @id
-  user            User      @relation(fields: [user_id], references: [id])
+  user            User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id         Int
   fill_time       DateTime  @default(now())
   head            Boolean   @default(false)
