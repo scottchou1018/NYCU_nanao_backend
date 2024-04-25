@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDetailDto } from './dto/create-user-detail.dto';
-import { UpdateUserDetailDto } from './dto/update-user-detail.dto';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class UserDetailService {
-  create(createUserDetailDto: CreateUserDetailDto) {
-    return 'This action adds a new userDetail';
+  constructor(private readonly databaseService: DatabaseService){}
+  async create(createUserDetailDto: Prisma.UserDetailCreateInput) {
+    return this.databaseService.userDetail.create({
+      data: createUserDetailDto
+    })
   }
 
-  findAll() {
-    return `This action returns all userDetail`;
+  async findAll(gender?: 'MALE' | 'FEMALE') {
+    if (gender) return this.databaseService.userDetail.findMany({
+      where:{
+        gender,
+      }
+    })
+    return this.databaseService.userDetail.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} userDetail`;
+  async findOne(id: number) {
+    return this.databaseService.userDetail.findUnique({
+      where:{
+        user_id: id,
+      }
+    });
   }
 
-  update(id: number, updateUserDetailDto: UpdateUserDetailDto) {
-    return `This action updates a #${id} userDetail`;
+  async update(id: number, updateUserDetailDto: Prisma.UserDetailUpdateInput) {
+    return this.databaseService.userDetail.update({
+      where:{
+        user_id: id,
+      },
+      data: updateUserDetailDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} userDetail`;
+  async remove(id: number) {
+    return this.databaseService.userDetail.delete({
+      where:{
+        user_id: id,
+      }
+    });
   }
 }
