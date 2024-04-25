@@ -11,8 +11,6 @@ export class UserDetailController {
     return this.userDetailService.create(createUserDetailDto);
   }
 
-  
-
   @Get()
   findAll() {
     return this.userDetailService.findAll();
