@@ -1,12 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDetailDto } from './dto/create-user-detail.dto';
-import { UpdateUserDetailDto } from './dto/update-user-detail.dto';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class UserDetailService {
-  create(createUserDetailDto: CreateUserDetailDto) {
-    return 'This action adds a new userDetail';
+  constructor(private readonly databaseService: DatabaseService){}
+  async create(createUserDetailDto: Prisma.UserDetailCreateInput) {
+    return this.databaseService.userDetail.create({
+      data: createUserDetailDto
+    })
   }
+  
+
+
 
   findAll() {
     return `This action returns all userDetail`;
@@ -16,7 +22,7 @@ export class UserDetailService {
     return `This action returns a #${id} userDetail`;
   }
 
-  update(id: number, updateUserDetailDto: UpdateUserDetailDto) {
+  update(id: number, updateUserDetailDto: Prisma.UserDetailUpdateInput) {
     return `This action updates a #${id} userDetail`;
   }
 

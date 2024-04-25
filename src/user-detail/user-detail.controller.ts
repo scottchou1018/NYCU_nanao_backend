@@ -1,16 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException,HttpStatus } from '@nestjs/common';
 import { UserDetailService } from './user-detail.service';
-import { CreateUserDetailDto } from './dto/create-user-detail.dto';
-import { UpdateUserDetailDto } from './dto/update-user-detail.dto';
+import { Prisma } from '@prisma/client';
 
 @Controller('user-detail')
 export class UserDetailController {
   constructor(private readonly userDetailService: UserDetailService) {}
 
   @Post()
-  create(@Body() createUserDetailDto: CreateUserDetailDto) {
+  create(@Body() createUserDetailDto: Prisma.UserDetailCreateInput) {
     return this.userDetailService.create(createUserDetailDto);
   }
+
+  
 
   @Get()
   findAll() {
@@ -23,7 +24,7 @@ export class UserDetailController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDetailDto: UpdateUserDetailDto) {
+  update(@Param('id') id: string, @Body() updateUserDetailDto: Prisma.UserDetailUpdateInput) {
     return this.userDetailService.update(+id, updateUserDetailDto);
   }
 
