@@ -1,31 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ConsoleLogger } from '@nestjs/common';
 import { HurtformService } from './hurtform.service';
 import { Prisma } from '@prisma/client';
+import { query } from 'express';
 
 @Controller('hurtform')
 export class HurtformController {
   constructor(private readonly hurtformService: HurtformService) {}
 
-  @Post(':id')
-  create(@Param('id') id: string, @Body() createHurtformDto: Prisma.HurtFormCreateInput) {
-    return this.hurtformService.create(+id, createHurtformDto);
+  @Post(':username')
+  create(@Param('username') username: string, @Body() createHurtformDto: Prisma.HurtFormCreateInput) {
+    return this.hurtformService.create(username, createHurtformDto);
   }
 
-  @Get()
-  findAll() {
-    return this.hurtformService.findAll();
+  @Get(':username')
+  findUserForm(@Param('username') username: string, @Query('start') startTime?: string, @Query('end') endTime?: string) {
+    return this.hurtformService.findMany(username, startTime, endTime);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.hurtformService.findOne(+id);
-  }
-
-  
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHurtformDto: Prisma.HurtFormUpdateInput) {
-    return this.hurtformService.update(+id, updateHurtformDto);
+  @Get(':username/:num')
+  findLast_K(@Param('username') username: string, @Param('num') k: number){
+    return this.hurtformService.findLast_K(username, k);
   }
 
   @Delete(':id')
