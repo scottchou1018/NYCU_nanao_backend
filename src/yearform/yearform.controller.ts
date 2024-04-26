@@ -1,30 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { YearformService } from './yearform.service';
-import { CreateYearformDto } from './dto/create-yearform.dto';
-import { UpdateYearformDto } from './dto/update-yearform.dto';
+import { Prisma } from '@prisma/client';
 
 @Controller('yearform')
 export class YearformController {
   constructor(private readonly yearformService: YearformService) {}
 
-  @Post()
-  create(@Body() createYearformDto: CreateYearformDto) {
-    return this.yearformService.create(createYearformDto);
+  @Post(':userId')
+  create(@Param('userId') userId: string, @Body() createYearformDto: Prisma.YearFormCreateInput) {
+    return this.yearformService.create(+userId, createYearformDto);
   }
 
-  @Get()
-  findAll() {
-    return this.yearformService.findAll();
+  @Get(':userId')
+  findUserForm(@Param('userId') userId: string, @Query('start') startTime?: string, @Query('end') endTime?: string) {
+    return this.yearformService.findMany(+userId, startTime, endTime);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.yearformService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateYearformDto: UpdateYearformDto) {
-    return this.yearformService.update(+id, updateYearformDto);
+  @Get(':userId/:num')
+  findLast_K(@Param('userId') userId: string, @Param('num') k: number){
+    return this.yearformService.findLast_K(+userId, k);
   }
 
   @Delete(':id')

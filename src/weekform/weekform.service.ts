@@ -1,26 +1,53 @@
-import { Injectable } from '@nestjs/common';
-import { CreateWeekformDto } from './dto/create-weekform.dto';
-import { UpdateWeekformDto } from './dto/update-weekform.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class WeekformService {
-  create(createWeekformDto: CreateWeekformDto) {
-    return 'This action adds a new weekform';
+  constructor(private readonly databaseService: DatabaseService){}
+
+  async create(userId: number, createWeekformDto: Prisma.WeekFormCreateInput) {
+    return {
+      data: await this.databaseService.weekForm.create({
+          data: {...createWeekformDto, user: {connect: {id: userId}}}
+        }),
+    };
   }
 
-  findAll() {
-    return `This action returns all weekform`;
+  async findMany(userId: number, startTimeString?: string, endTimeString?: string){
+    return {
+      data: await this.databaseService.weekForm.findMany({
+        where: {
+          user_id: userId,
+          fill_time:{
+            gte: startTimeString,
+            lte: endTimeString
+          }
+        },
+        orderBy: {
+          'id': 'desc'
+        }
+      })
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} weekform`;
+  async findLast_K(userId: number, k: number){
+    let formList = await this.databaseService.weekForm.findMany({
+      where:{
+        user_id:userId
+      },
+      orderBy: {
+        id: 'desc'
+      }
+    })
+    return formList.slice(0, k < formList.length ? k : formList.length);
   }
 
-  update(id: number, updateWeekformDto: UpdateWeekformDto) {
-    return `This action updates a #${id} weekform`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} weekform`;
+  async remove(id: number) {
+    return await this.databaseService.weekForm.delete({
+      where:{
+        id: id
+      }
+    })
   }
 }
