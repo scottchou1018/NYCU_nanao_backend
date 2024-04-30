@@ -9,7 +9,7 @@ export class YearformController {
   @Post(':userId')
   create(@Param('userId', ParseIntPipe) userId: number, @Body() createYearformDto: Prisma.YearFormCreateInput) {
     return this.yearformService.create(userId, createYearformDto);
-  }
+  }  
 
   @Get(':userId')
   findUserForm(@Param('userId', ParseIntPipe) userId: number, @Query('start') startTime?: string, @Query('end') endTime?: string) {
