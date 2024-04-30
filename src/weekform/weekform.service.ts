@@ -7,6 +7,16 @@ export class WeekformService {
   constructor(private readonly databaseService: DatabaseService){}
 
   async create(userId: number, createWeekformDto: Prisma.WeekFormCreateInput) {
+    // Check if user exists
+    const user = await this.databaseService.user.findUnique({
+      where:{
+        id: userId
+      }
+    })
+    if (!user){
+      throw new HttpException(`User ${userId} not found.`, HttpStatus.BAD_REQUEST);
+    }
+
     return {
       data: await this.databaseService.weekForm.create({
           data: {...createWeekformDto, user: {connect: {id: userId}}}
@@ -15,23 +25,52 @@ export class WeekformService {
   }
 
   async findMany(userId: number, startTimeString?: string, endTimeString?: string){
-    return {
-      data: await this.databaseService.weekForm.findMany({
-        where: {
-          user_id: userId,
-          fill_time:{
-            gte: startTimeString,
-            lte: endTimeString
+    // Check if user exists
+    const user = await this.databaseService.user.findUnique({
+      where:{
+        id: userId
+      }
+    })
+    if (!user){
+      throw new HttpException(`User ${userId} not found.`, HttpStatus.BAD_REQUEST);
+    }
+
+    try {
+      return {
+        data: await this.databaseService.weekForm.findMany({
+          where: {
+            user_id: userId,
+            fill_time:{
+              gte: startTimeString,
+              lte: endTimeString
+            }
+          },
+          orderBy: {
+            'id': 'desc'
           }
-        },
-        orderBy: {
-          'id': 'desc'
-        }
-      })
+        })
+      }
+    }
+    catch (e: unknown) {
+      if (e instanceof Prisma.PrismaClientValidationError) {
+        // Check if the error is due to invalid date
+        throw new HttpException("'start' or 'end' is not a valid date.", HttpStatus.BAD_REQUEST);
+      }
+      throw e;
     }
   }
 
   async findLast_K(userId: number, k: number){
+    // Check if user exists
+    const user = await this.databaseService.user.findUnique({
+      where:{
+        id: userId
+      }
+    })
+    if (!user){
+      throw new HttpException(`User ${userId} not found.`, HttpStatus.BAD_REQUEST);
+    }
+
     let formList = await this.databaseService.weekForm.findMany({
       where:{
         user_id:userId
@@ -44,6 +83,16 @@ export class WeekformService {
   }
 
   async remove(id: number) {
+    // Check if weekform exists
+    const weekform = await this.databaseService.weekForm.findUnique({
+      where:{
+        id: id
+      }
+    })
+    if (!weekform){
+      throw new HttpException(`weekform ${id} not found.`, HttpStatus.BAD_REQUEST);
+    }
+
     return await this.databaseService.weekForm.delete({
       where:{
         id: id
