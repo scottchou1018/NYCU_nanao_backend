@@ -41,6 +41,11 @@ export class HurtformService {
       throw new HttpException(`User ${userId} not found.`, HttpStatus.BAD_REQUEST);
     }
 
+    // Check if startTime is later than endTime
+    if (startTimeString && endTimeString && new Date(startTimeString) > new Date(endTimeString)) {
+      throw new HttpException(`Start time ${startTimeString} is later than end time ${endTimeString}.`, HttpStatus.BAD_REQUEST);
+    }
+
     try {
       return {
         data: await this.databaseService.hurtForm.findMany({
