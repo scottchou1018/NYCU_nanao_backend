@@ -79,7 +79,7 @@ model HurtForm{
 }
 
 model YearForm{
-  id              Int       @id
+  id              Int       @id @default(autoincrement())
   user            User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id         Int
   fill_time       DateTime  @default(now())
@@ -111,7 +111,7 @@ model YearForm{
 }
 
 model WeekForm{
-  id              Int       @id
+  id              Int       @id @default(autoincrement())
   user            User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id         Int
   fill_time       DateTime  @default(now())

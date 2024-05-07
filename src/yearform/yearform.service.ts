@@ -1,26 +1,54 @@
 import { Injectable } from '@nestjs/common';
-import { CreateYearformDto } from './dto/create-yearform.dto';
-import { UpdateYearformDto } from './dto/update-yearform.dto';
+import { DatabaseService } from 'src/database/database.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class YearformService {
-  create(createYearformDto: CreateYearformDto) {
-    return 'This action adds a new yearform';
+  constructor(private readonly databaseService: DatabaseService){}
+
+  async create(userId: number, createYearformDto: Prisma.YearFormCreateInput) {
+    
+    return {
+      data: await this.databaseService.yearForm.create({
+          data: {...createYearformDto, user: {connect: {id: userId}}}
+        }),
+    };
   }
 
-  findAll() {
-    return `This action returns all yearform`;
+  async findMany(userId: number, startTimeString?: string, endTimeString?: string){
+    return {
+      data: await this.databaseService.yearForm.findMany({
+        where: {
+          user_id: userId,
+          fill_time:{
+            gte: startTimeString,
+            lte: endTimeString
+          }
+        },
+        orderBy: {
+          'id': 'desc'
+        }
+      })
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} yearform`;
+  async findLast_K(userId: number, k: number){
+    let formList = await this.databaseService.yearForm.findMany({
+      where:{
+        user_id:userId
+      },
+      orderBy: {
+        id: 'desc'
+      }
+    })
+    return formList.slice(0, k < formList.length ? k : formList.length);
   }
 
-  update(id: number, updateYearformDto: UpdateYearformDto) {
-    return `This action updates a #${id} yearform`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} yearform`;
+  async remove(id: number) {
+    return await this.databaseService.yearForm.delete({
+      where:{
+        id: id
+      }
+    })
   }
 }
