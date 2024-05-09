@@ -50,8 +50,8 @@ export class HurtformService {
       return {
         data: await this.databaseService.hurtForm.findMany({
           where: {
-            user_id: userId,
-            fill_time:{
+            userId: userId,
+            fillTime:{
               gte: startTimeString,
               lte: endTimeString
             }
@@ -84,7 +84,7 @@ export class HurtformService {
 
     let formList = await this.databaseService.hurtForm.findMany({
       where:{
-        user_id:userId
+        userId:userId
       },
       orderBy: {
         id: 'desc'
