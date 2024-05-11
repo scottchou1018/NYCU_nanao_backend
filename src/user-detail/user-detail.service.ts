@@ -23,7 +23,7 @@ export class UserDetailService {
   async findOne(id: number) {
     return this.databaseService.userDetail.findUnique({
       where:{
-        userId: id,
+        user_id: id,
       }
     });
   }
@@ -31,7 +31,7 @@ export class UserDetailService {
   async update(id: number, updateUserDetailDto: Prisma.UserDetailUpdateInput) {
     return this.databaseService.userDetail.update({
       where:{
-        userId: id,
+        user_id: id,
       },
       data: updateUserDetailDto,
     });
@@ -40,7 +40,7 @@ export class UserDetailService {
   async remove(id: number) {
     return this.databaseService.userDetail.delete({
       where:{
-        userId: id,
+        user_id: id,
       }
     });
   }
