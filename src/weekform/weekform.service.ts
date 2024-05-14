@@ -44,8 +44,8 @@ export class WeekformService {
       return {
         data: await this.databaseService.weekForm.findMany({
           where: {
-            userId: userId,
-            fillTime:{
+            user_id: userId,
+            fill_time:{
               gte: startTimeString,
               lte: endTimeString
             }
@@ -78,7 +78,7 @@ export class WeekformService {
 
     let formList = await this.databaseService.weekForm.findMany({
       where:{
-        userId:userId
+        user_id:userId
       },
       orderBy: {
         id: 'desc'

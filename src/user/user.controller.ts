@@ -7,16 +7,10 @@ import { Prisma } from '@prisma/client';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('/register')
+  @Post()
   create(@Body() createUserDto: Prisma.UserCreateInput) {
     return this.userService.create(createUserDto);
   }
-
-  @Post('/login')
-  login(@Body() loginUserDto){
-    return this.userService.login(loginUserDto);
-  }
-
 
   @Get()
   findAll() {

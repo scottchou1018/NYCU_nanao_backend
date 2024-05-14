@@ -12,26 +12,6 @@ export class UserService {
     })
   }
 
-  async login(loginUserDto){
-    let hashedPassword:string = await bcrypt.hash(loginUserDto['password'], 10);
-    let user = await this.databaseService.user.findUnique({
-      where:{
-        username: loginUserDto['username'],
-      }
-    })
-    if(!user){
-      throw new HttpException('user not found', HttpStatus.BAD_REQUEST);
-    }
-    let valid = await bcrypt.compare(loginUserDto['password'], user.password)
-    if(!valid){
-      throw new HttpException('password does not match', HttpStatus.UNAUTHORIZED);
-    }
-    return {
-      success: true,
-      message: 'login succeed'
-    }
-  }
-
   async findAll() {
     return this.databaseService.user.findMany();
   }

@@ -8,9 +8,11 @@ import { WeekformModule } from './weekform/weekform.module';
 import { UserModule } from './user/user.module';
 import { UserDetailModule } from './user-detail/user-detail.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [DatabaseModule, HurtformModule, YearformModule, WeekformModule, UserModule, UserDetailModule, ConfigModule.forRoot()],
+  imports: [DatabaseModule, HurtformModule, YearformModule, WeekformModule, UserModule, UserDetailModule, AuthModule, ConfigModule.forRoot({isGlobal:true})],
   controllers: [AppController],
   providers: [AppService],
 })
