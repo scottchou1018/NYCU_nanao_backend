@@ -2,8 +2,6 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 import * as bcrypt from 'bcrypt'
-import { hasSubscribers } from 'diagnostics_channel';
-
 @Injectable()
 export class UserService {
   constructor(private readonly databaseService: DatabaseService){}
@@ -24,12 +22,13 @@ export class UserService {
     if(!user){
       throw new HttpException('user not found', HttpStatus.BAD_REQUEST);
     }
-    if(await bcrypt.compare(hashedPassword, user.password)){
-      throw new HttpException('password do not match', HttpStatus.UNAUTHORIZED);
+    let valid = await bcrypt.compare(loginUserDto['password'], user.password)
+    if(!valid){
+      throw new HttpException('password does not match', HttpStatus.UNAUTHORIZED);
     }
     return {
       success: true,
-      message: 'login succeeded',
+      message: 'login succeed'
     }
   }
 
@@ -46,11 +45,22 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: Prisma.UserUpdateInput) {
-    return this.databaseService.user.update({
+    if(this.databaseService.user.findUnique({
+      where:{
+        id: id,
+      }
+    }) == null){
+      throw new HttpException('user does not exist', HttpStatus.BAD_REQUEST)
+    }
+    let hashedUpdateUser = {
+      ...updateUserDto,
+      password: await bcrypt.hash(updateUserDto.password.toString(), 10)
+    }
+    return await this.databaseService.user.update({
       where:{
         id,
       },
-      data: updateUserDto,
+      data: hashedUpdateUser,
     });
   }
 

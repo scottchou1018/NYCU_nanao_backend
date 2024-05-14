@@ -28,12 +28,12 @@ model User{
 }
 model UserDetail{
   user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           Int           @id
+  userId            Int           @id
   gender            Gender?
   birthday          String
   age               Int?
-  medicalHistory   String?
-  headshot          Bytes?        @db.Blob
+  medicalHistory    String?
+  headshotLocation  String?
   address           String?
   email             String?
   phone             String?
