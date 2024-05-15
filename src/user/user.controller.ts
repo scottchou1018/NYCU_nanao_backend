@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete} from '@nestjs/common';
 import { UserService } from './user.service';
 import { Prisma } from '@prisma/client';
 
@@ -9,6 +9,11 @@ export class UserController {
   @Post()
   create(@Body() createUserDto: Prisma.UserCreateInput) {
     return this.userService.create(createUserDto);
+  }
+
+  @Post('/login')
+  login(@Body() body: {username: string, password: string}){
+    return this.userService.login(body);
   }
 
   @Get()
