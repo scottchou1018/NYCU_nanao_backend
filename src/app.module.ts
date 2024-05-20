@@ -11,9 +11,13 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
+import configuration from 'config/configuration';
 
 @Module({
-  imports: [DatabaseModule, HurtformModule, YearformModule, WeekformModule, UserModule, UserDetailModule, AuthModule, ConfigModule.forRoot({isGlobal:true}),
+  imports: [
+    DatabaseModule, HurtformModule, YearformModule, WeekformModule, 
+    UserModule, UserDetailModule, AuthModule,
+    ConfigModule.forRoot({isGlobal:true, load:[configuration],}),
     PassportModule.register({
       session: true
     })

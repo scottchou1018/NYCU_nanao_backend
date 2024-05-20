@@ -9,7 +9,7 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post('login')
     login(){
-        
+        return 'login succeeded'
     }
 
     @UseGuards(AdminOrSameUserIdGuard)
