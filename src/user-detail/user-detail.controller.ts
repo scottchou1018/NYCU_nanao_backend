@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException,HttpStatus, UseGuards } from '@nestjs/common';
 import { UserDetailService } from './user-detail.service';
 import { Prisma } from '@prisma/client';
-import { AdminOrSameUserIdGuard } from 'src/auth/utils/guards/LocalGuard';
-import { UserIdName } from 'src/auth/utils/metadata/SetUserIdParamName';
+import { AdminOrSameUserIdGuard, UserDetailCreateGuard } from 'src/auth/utils/guards/LocalGuard';
+import { UserIdName } from 'src/auth/utils/metadata/GuardMetadata';
 
 @Controller('user-detail')
 export class UserDetailController {
   constructor(private readonly userDetailService: UserDetailService) {}
 
-
+  @UseGuards(UserDetailCreateGuard)
   @Post()
   create(@Body() createUserDetailDto: Prisma.UserDetailCreateInput) {
     return this.userDetailService.create(createUserDetailDto);

@@ -3,7 +3,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { UserService } from './user.service';
 import { Prisma } from '@prisma/client';
 import { AdminOrSameUserIdGuard } from 'src/auth/utils/guards/LocalGuard';
-import { UserIdName } from 'src/auth/utils/metadata/SetUserIdParamName';
+import { UserIdName } from 'src/auth/utils/metadata/GuardMetadata';
 
 
 @Controller('user')

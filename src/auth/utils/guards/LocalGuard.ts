@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable } 
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
 import { Request } from "express";
-
+import { DatabaseService } from "src/database/database.service";
 
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local'){
@@ -36,7 +36,7 @@ To use this guard:
 */
 @Injectable()
 export class AdminOrSameUserIdGuard implements CanActivate{
-    constructor(private reflector: Reflector,){}
+    constructor(private readonly reflector: Reflector,){}
     async canActivate(context: ExecutionContext){
         const req = context.switchToHttp().getRequest<Request>();
         if(!req.isAuthenticated())
@@ -50,6 +50,63 @@ export class AdminOrSameUserIdGuard implements CanActivate{
         if(req.user['id'] == req.params[userId_params_name]){
             return true;
         }
+        return false;
+    }
+}
+
+
+@Injectable()
+export class UserDetailCreateGuard implements CanActivate{
+    constructor(private readonly reflector: Reflector,){}
+    async canActivate(context: ExecutionContext){
+        const req = context.switchToHttp().getRequest<Request>();
+        if(!req.isAuthenticated())
+            throw new HttpException("please login first", HttpStatus.UNAUTHORIZED);
+
+        if(req.user['role'] == 'ADMIN')
+            return true;
+        if(req.user['id'] == req.body['user']['connect']['id']){
+            return true;
+        }
+        return false;
+    }
+}
+
+@Injectable()
+export class FormDeleteGuard implements CanActivate{
+    constructor(
+        private readonly databaseService: DatabaseService,
+        private readonly reflector: Reflector,
+    ){}
+
+    async canActivate(context: ExecutionContext) {
+        const req = context.switchToHttp().getRequest<Request>();
+        if(!req.isAuthenticated())
+            throw new HttpException("please login first", HttpStatus.UNAUTHORIZED);
+
+        if(req.user['role'] == 'ADMIN')
+            return true;
+
+        const formType = this.reflector.get<string>('formType', context.getHandler())
+        const formIdName = this.reflector.get<string>('formIdName', context.getHandler())
+        const formId = parseInt(req.params[formIdName])
+
+        if(isNaN(formId)){
+            throw new HttpException('form_id parameter has invalid format', HttpStatus.BAD_REQUEST);
+        }
+
+
+        const form = await this.databaseService[formType].findUnique({
+            where:{
+                id: formId
+            }
+        })
+
+        if(!form){
+            throw new HttpException('form not found', HttpStatus.NOT_FOUND)
+        }
+        if(form.user_id == req.user['id'])
+            return true;
         return false;
     }
 }

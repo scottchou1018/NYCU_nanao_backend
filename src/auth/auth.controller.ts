@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Inject, Post, Session, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Inject, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AdminOrSameUserIdGuard, LocalAuthGuard } from './utils/guards/LocalGuard';
+import { LocalAuthGuard } from './utils/guards/LocalGuard';
 
 @Controller('auth')
 export class AuthController {
@@ -12,9 +12,13 @@ export class AuthController {
         return 'login succeeded'
     }
 
-    @UseGuards(AdminOrSameUserIdGuard)
-    @Get('status')
-    getAuthStatus(@Body() body, @Session() session){
-        return session
+    @Delete('logout')
+    logout(@Request() req){
+        req.logout((err) => {
+            if(err){
+                throw err
+            }
+        });
+        return 'logout succeeded'
     }
 }
