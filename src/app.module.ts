@@ -10,9 +10,14 @@ import { UserDetailModule } from './user-detail/user-detail.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports: [DatabaseModule, HurtformModule, YearformModule, WeekformModule, UserModule, UserDetailModule, AuthModule, ConfigModule.forRoot({isGlobal:true})],
+  imports: [DatabaseModule, HurtformModule, YearformModule, WeekformModule, UserModule, UserDetailModule, AuthModule, ConfigModule.forRoot({isGlobal:true}),
+    PassportModule.register({
+      session: true
+    })
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,27 +1,25 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt'
+import { session } from 'passport';
 import { DatabaseService } from 'src/database/database.service';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly databaseService: DatabaseService){}
-
-    async login(loginUserDto){
-        let user = await this.databaseService.user.findUnique({
-            where:{
-            username: loginUserDto['username'],
-            }
-        })
+    constructor(
+        private readonly databaseService: DatabaseService,
+        @Inject('USER_SERVICE') private readonly userService: UserService){}
+    
+    
+    async validateUser(username: string, password: string){
+        let user = await this.userService.findOne(await this.userService.findId(username));
         if(!user){
-            throw new HttpException('user not found', HttpStatus.BAD_REQUEST);
+            return null;
         }
-        let valid = await bcrypt.compare(loginUserDto['password'], user.password)
+        let valid = await bcrypt.compare(password, user.password)
         if(!valid){
-            throw new HttpException('password does not match', HttpStatus.UNAUTHORIZED);
+            return null;
         }
-        return {
-            success: true,
-            message: 'login succeed'
-        }
+        return user
     }
 }

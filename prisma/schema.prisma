@@ -30,7 +30,7 @@ model UserDetail{
   user              User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id           Int           @id
   gender            Gender?
-  birthday          String
+  birthday          String?
   age               Int?
   medical_History   String?
   headshot          String?
