@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe, UseGuards, Request, HttpException, HttpStatus } from '@nestjs/common';
 import { WeekformService } from './weekform.service';
 import { Prisma } from '@prisma/client';
-import { AdminOrSameUserIdGuard } from 'src/auth/utils/guards/LocalGuard';
-import { UserIdName } from 'src/auth/utils/metadata/SetUserIdParamName';
+import { AdminOrSameUserIdGuard, FormDeleteGuard } from 'src/auth/utils/guards/LocalGuard';
+import { SetFormMetaData, UserIdName } from 'src/auth/utils/metadata/GuardMetadata';
 @Controller('weekform')
 export class WeekformController {
   constructor(private readonly weekformService: WeekformService) {}
@@ -28,7 +28,8 @@ export class WeekformController {
     return this.weekformService.findLast_K(userId, k);
   }
 
-  @UseGuards(AdminOrSameUserIdGuard)
+  @UseGuards(FormDeleteGuard)
+  @SetFormMetaData('weekForm', 'id')
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.weekformService.remove(id);

@@ -101,9 +101,9 @@ export class HurtformService {
       }
     })
     if(!hurtForm){
-       throw new HttpException(`hurtForm ${id} not found.`, HttpStatus.BAD_REQUEST);
+       throw new HttpException(`hurtForm ${id} not found.`, HttpStatus.NOT_FOUND);
     }
-    
+
     return await this.databaseService.hurtForm.delete({
       where:{
         id: id

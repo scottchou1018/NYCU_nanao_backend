@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { YearformService } from './yearform.service';
 import { Prisma } from '@prisma/client';
-import { AdminOrSameUserIdGuard } from 'src/auth/utils/guards/LocalGuard';
-import { UserIdName } from 'src/auth/utils/metadata/SetUserIdParamName';
+import { AdminOrSameUserIdGuard, FormDeleteGuard } from 'src/auth/utils/guards/LocalGuard';
+import { SetFormMetaData, UserIdName } from 'src/auth/utils/metadata/GuardMetadata';
 
 @Controller('yearform')
 export class YearformController {
@@ -29,7 +29,8 @@ export class YearformController {
     return this.yearformService.findLast_K(userId, k);
   }
   
-  @UseGuards(AdminOrSameUserIdGuard)
+  @UseGuards(FormDeleteGuard)
+  @SetFormMetaData('hurtForm', 'id')
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.yearformService.remove(id);

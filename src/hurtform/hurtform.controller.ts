@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ConsoleLogger, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { HurtformService } from './hurtform.service';
 import { Prisma } from '@prisma/client';
-import { AdminOrSameUserIdGuard } from 'src/auth/utils/guards/LocalGuard';
-import { UserIdName } from 'src/auth/utils/metadata/SetUserIdParamName';
+import { AdminOrSameUserIdGuard, FormDeleteGuard } from 'src/auth/utils/guards/LocalGuard';
+import { SetFormMetaData, UserIdName } from 'src/auth/utils/metadata/GuardMetadata';
 
 @Controller('hurtform')
 export class HurtformController {
@@ -29,6 +29,9 @@ export class HurtformController {
     return this.hurtformService.findLast_K(userId, k);
   }
 
+
+  @UseGuards(FormDeleteGuard)
+  @SetFormMetaData('hurtForm', 'id')
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.hurtformService.remove(id);
