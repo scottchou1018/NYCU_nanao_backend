@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Session } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+
 import { UserService } from './user.service';
 import { Prisma } from '@prisma/client';
 import { AdminOrSameUserIdGuard } from 'src/auth/utils/guards/LocalGuard';
