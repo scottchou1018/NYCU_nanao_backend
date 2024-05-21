@@ -8,8 +8,12 @@ import { WeekformModule } from './weekform/weekform.module';
 import { UserModule } from './user/user.module';
 import { UserDetailModule } from './user-detail/user-detail.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
+import configuration from 'config/configuration';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core'
+
 @Module({
   imports: [
     DatabaseModule, 
@@ -18,7 +22,11 @@ import { APP_GUARD } from '@nestjs/core'
     WeekformModule, 
     UserModule, 
     UserDetailModule, 
-    ConfigModule.forRoot(), 
+    AuthModule,
+    ConfigModule.forRoot({isGlobal:true, load:[configuration],}), 
+    PassportModule.register({
+      session: true
+    }),
     ThrottlerModule.forRoot([{
       name: 'short',
       ttl: 1000,
@@ -30,9 +38,11 @@ import { APP_GUARD } from '@nestjs/core'
     }])
   ],
   controllers: [AppController],
-  providers: [AppService, {
-    provide: APP_GUARD,
-    useClass: ThrottlerGuard,
-  }],
+  providers: [AppService, 
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    }
+  ],
 })
 export class AppModule {}
