@@ -13,12 +13,18 @@ async function bootstrap() {
     saveUninitialized:false,
     cookie:{
       maxAge: configService.get('session').maxAge, //ms
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production'
     }
   }))
-
+  
   app.use(passport.initialize());
   app.use(passport.session());
-  app.enableCors()
+  app.enableCors({
+    credentials: true,
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    methods: 'GET,HEAD,PATCH,POST,DELETE'
+  })
   await app.listen(3000);
 }
 bootstrap();
