@@ -9,12 +9,12 @@ async function bootstrap() {
   const configService = app.get<ConfigService>(ConfigService);
   app.use(session({
     secret: process.env.SESSION_SECRET,
-    resave: false,
+    resave: false,  
     saveUninitialized:false,
     cookie:{
       maxAge: configService.get('session').maxAge, //ms
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production'
+      secure: false
     }
   }))
   
