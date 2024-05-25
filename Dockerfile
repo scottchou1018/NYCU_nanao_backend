@@ -14,9 +14,9 @@ RUN prisma generate
 COPY . .
 RUN npm run build
 
-COPY wait-for-db.sh /wait-for-db.sh
-RUN chmod +x /wait-for-db.sh
-EXPOSE 3000
-ENTRYPOINT ["/wait-for-db.sh"]
+COPY wait-for-db.sh /app/wait-for-db.sh
+RUN chmod +x /app/wait-for-db.sh
 
-CMD ["npx", "prisma", "migrate", "deploy", "&&", "node", "dist/src/main"]
+EXPOSE 3000
+ENTRYPOINT ["/app/wait-for-db.sh"]
+CMD ["node", "dist/src/main"]

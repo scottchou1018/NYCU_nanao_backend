@@ -7,5 +7,11 @@ until nc -z -v -w60 db 3306; do
 done
 echo "MySQL is up - executing command"
 
-# Execute the command passed to the entrypoint
+# Apply Prisma migrations
+npx prisma migrate deploy
+
+# Run initDB.js script
+node /app/initDB.js
+
+# Run the application
 exec "$@"
