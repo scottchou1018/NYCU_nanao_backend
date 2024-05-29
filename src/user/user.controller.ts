@@ -10,6 +10,7 @@ import { UserIdName } from 'src/auth/utils/metadata/GuardMetadata';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(AdminOrSameUserIdGuard)
   @Post()
   create(@Body() createUserDto: Prisma.UserCreateInput) {
     return this.userService.create(createUserDto);
