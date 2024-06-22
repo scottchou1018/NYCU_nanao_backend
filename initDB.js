@@ -25,7 +25,8 @@ async function main() {
                         medical_History: '',
                         address: '',
                         email: '',
-                        phone: ''
+                        phone: '',
+                        headshot: '0'
                     }
                 }
             }
